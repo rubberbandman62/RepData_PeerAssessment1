@@ -9,8 +9,8 @@ output:
 ## Introduction
 
 In this assessment the usage of knitr should be practised. On a relative simple
-dataset several calcuation shall be performed an a couple of graphics shall be
-plotted. Together with the executed code an HTML document hsal be generated 
+dataset several calcuations shall be performed and a couple of graphics shall be
+plotted. Together with the executed code an HTML document shall be generated 
 which clearly explains the steps undertaken and the results received.
 
 ## Data
@@ -64,9 +64,11 @@ The mean steps taken per day is 1.0766189 &times; 10<sup>4</sup>.
 The median of steps taken per day is 10765.
 
 ## What is the average daily activity pattern?
+
 Group by interval and calculate the average number of steps taken in each 
 5-minute interval than plot the average daily activity pattern as a line 
 diagram.
+
 
 ```r
 library(dplyr)
@@ -82,7 +84,7 @@ plot(act2$interval, act2$mean, type='l',
 
 ![plot of chunk averageDailyActivityPattern](figure/averageDailyActivityPattern-1.png) 
 
-From the maximum average steps counted the corespondong interval can be derived.
+From the maximum average steps counted the coresponding interval can be derived.
 Some string conversions are done to report at what time the test person is usually most active during a day.
 
 
@@ -107,7 +109,7 @@ missingValues <- nrow(activities[is.na(activities$steps), ])
 ```
 
 There are 2304 missing values that were omitted in the previous
-calculations. To fill in the missing values for each intervall the average steps
+calculations. To fill in the missing values for each interval the average steps
 counted for that interval is used.
 
 
@@ -141,8 +143,9 @@ med2 <- median(act3$stepsTaken)
 ```
 
 The shape of the new histogram does not differ much from the original one. 
-This is evident because there were only intervals for eight days added 
-with the average values from the other 53 days.
+This is evident because there were intervals added for just eight days 
+with the average values from the other 53 days. Each bar should be a little bit 
+higher (8 units).
 
 The mean steps taken per day of the completed data frame is 1.076564 &times; 10<sup>4</sup>. 
 The median steps taken per day of the completed data frame is 1.0762 &times; 10<sup>4</sup>.
@@ -152,7 +155,7 @@ The new mean differs by -0.55 from the old mean. The new median differs by
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-For the comparison of workdays and weekends two sets are filtered one including
+For the comparison of workdays and weekends two sets are filtered. One including
 the workdays and the other including the weekends. Both are grouped by 5-minute
 interals and the means of steps are calculated.
 
