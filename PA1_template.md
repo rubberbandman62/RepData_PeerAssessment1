@@ -1,10 +1,5 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-author: "Hartwig Tödter"
-output: 
-    html_document:
-        keep_md: true
----
+# Reproducible Research: Peer Assessment 1
+Hartwig Tödter  
 
 ## Introduction
 
@@ -26,7 +21,8 @@ interval during October and November 2012. The variables are:
 
 The data is loaded and the date factor is converted into a date.
 
-```{r}
+
+```r
 unzip("activity.zip")
 activities <- read.csv("activity.csv")
 activities$date <- as.Date(activities$date)
@@ -37,8 +33,25 @@ activities$date <- as.Date(activities$date)
 For the histogram the data is grouped by date and the steps taken are 
 summarized for each date ignoring those intervals where no values are available.
 
-```{r}
+
+```r
 library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+## 
+## The following object is masked from 'package:stats':
+## 
+##     filter
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 act1 <- activities %>% 
     filter(!is.na(steps)) %>%
     group_by(date) %>% 
@@ -50,19 +63,23 @@ hist(act1$stepsTaken,
      ylab="Frequency") 
 ```
 
-```{r}
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+
+
+```r
 m1 <- mean(act1$stepsTaken)
 med1 <- median(act1$stepsTaken)
 ```
 
-The mean steps taken per day is `r m1`. 
-The median of steps taken per day is `r med1`.
+The mean steps taken per day is 1.0766189\times 10^{4}. 
+The median of steps taken per day is 10765.
 
 ## What is the average daily activity pattern?
 Group by interval and calculate the average number of steps taken in each 
 5-minute interval than plot the average daily activity pattern as a line 
 diagram.
-```{r}
+
+```r
 library(dplyr)
 act2 <- activities %>%
     filter(!is.na(steps)) %>%
@@ -74,10 +91,13 @@ plot(act2$interval, act2$mean, type='l',
     main="Average Daily Activity Pattern")
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+
 From the maximum average steps counted the corespondong interval can be derived.
 Some string conversions are done to report at what time the test person is usually most active during a day.
 
-```{r}
+
+```r
 maxSteps <- max(act2$mean)
 index <- which(act2$mean == maxSteps)
 interval <- act2[index,]$interval
@@ -86,21 +106,23 @@ maxTime <- paste(substr(strInterval, 1, 2), ":",
                  substr(strInterval, 3, 4), ":00", sep="")
 ```
 
-The interval `r interval` with an average of `r maxSteps` steps is the interval
-with the maximum of steps counted. That means that usually the maximum activity 
-is taken at `r maxTime`.
+The interval 835 with an average of 206.1698113 steps is the interval
+with the maximum number of steps counted. That means that usually the maximum activity 
+is performed at 08:35:00.
 
 ## Imputing missing values
 
-```{r}
+
+```r
 missingValues <- nrow(activities[is.na(activities$steps), ])
 ```
 
-There are `r missingValues` missing values that were omitted in the previous
+There are 2304 missing values that were omitted in the previous
 calculations. To fill in the missing values for each intervall the average steps
 counted for that interval is used.
 
-```{r}
+
+```r
 library(dplyr)
 actFull <- merge(activities, act2)
 actFull$steps[is.na(actFull$steps)] <- round(actFull$mean[is.na(actFull$steps)])
@@ -109,7 +131,8 @@ actFull <- arrange(actFull[c("steps", "date", "interval")], date, interval)
 
 With these added values an new histogram is plotted:
 
-```{r}
+
+```r
 library(dplyr)
 act3 <- actFull %>% 
     group_by(date) %>% 
@@ -119,16 +142,24 @@ hist(act3$stepsTaken,
      main="Histogram including filled missing values", 
      xlab="numbers of steps taken a day", 
      ylab="Frequency") 
-m2 <- mean(act3$stepsTaken)
-med2 <- median(act3$stepsTaken)
-
 ```
 
-The mean steps taken per day of the completed data frame is `r round(m2, 2)`. 
-The median steps taken per day of the completed data frame is `r round(med2)`.
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
 
-The new mean differs by `r round(m2-m1, 2)` from the old mean. The new median differs by
-`r round(med2-med1)` from the old median.
+```r
+m2 <- mean(act3$stepsTaken)
+med2 <- median(act3$stepsTaken)
+```
+
+The shape of the new histogram does not differ much from the original one. 
+This is evident because there were only intervals for eight days added 
+with the average values from the other 53 days.
+
+The mean steps taken per day of the completed data frame is 1.076564\times 10^{4}. 
+The median steps taken per day of the completed data frame is 1.0762\times 10^{4}.
+
+The new mean differs by -0.55 from the old mean. The new median differs by
+-3 from the old median.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -136,7 +167,8 @@ For the comparison of workdays and weekends two sets are filtered one including
 the workdays and the other including the weekends. Both are grouped by 5-minute
 interals and the means of steps are calculated.
 
-```{r}
+
+```r
 library(dplyr)
 
 actWD <- activities %>%
@@ -159,10 +191,14 @@ plot(actWD$interval, actWD$mean, type='l',
 plot(actWE$interval, actWE$mean, type='l', 
     main="Average Daily Activity Pattern on Weekends", 
     xlab="Steps per 5-minute interval", ylab="Frequency")
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
+
+```r
 stepsPerWorkday <- round(mean(actWD$mean) * 288)
 stepsPerWeekendday <- round(mean(actWE$mean) * 288)
 ```
 On weekends the activity is significant higher than on workdays. The test person
-usually performs `r stepsPerWeekendday-stepsPerWorkday` more steps on a Saturday
+usually performs 2230 more steps on a Saturday
 or Sunday than on a normal workday.
