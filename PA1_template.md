@@ -163,14 +163,14 @@ interals and the means of steps are calculated.
 ```r
 library(dplyr)
 
-actWD <- activities %>%
+actWD <- actFull %>%
     filter(!is.na(steps) & 
                       !(weekdays(as.POSIXlt(date)) == "Samstag" | 
                         weekdays(as.POSIXlt(date)) == "Sonntag")) %>%
     group_by(interval) %>%
     summarize(mean = mean(steps))
 
-actWE <- activities %>%
+actWE <- actFull %>%
     filter(!is.na(steps) & 
                       (weekdays(as.POSIXlt(date)) == "Samstag" | 
                        weekdays(as.POSIXlt(date)) == "Sonntag")) %>%
@@ -192,5 +192,5 @@ stepsPerWorkday <- round(mean(actWD$mean) * 288)
 stepsPerWeekendday <- round(mean(actWE$mean) * 288)
 ```
 On weekends the activity is significant higher than on workdays. The test person
-usually performs 2230 more steps on a Saturday
+usually performs 1946 more steps on a Saturday
 or Sunday than on a normal workday.

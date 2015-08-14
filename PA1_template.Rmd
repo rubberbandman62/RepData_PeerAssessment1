@@ -145,14 +145,14 @@ interals and the means of steps are calculated.
 ```{r workdayWeekendActivities}
 library(dplyr)
 
-actWD <- activities %>%
+actWD <- actFull %>%
     filter(!is.na(steps) & 
                       !(weekdays(as.POSIXlt(date)) == "Samstag" | 
                         weekdays(as.POSIXlt(date)) == "Sonntag")) %>%
     group_by(interval) %>%
     summarize(mean = mean(steps))
 
-actWE <- activities %>%
+actWE <- actFull %>%
     filter(!is.na(steps) & 
                       (weekdays(as.POSIXlt(date)) == "Samstag" | 
                        weekdays(as.POSIXlt(date)) == "Sonntag")) %>%
