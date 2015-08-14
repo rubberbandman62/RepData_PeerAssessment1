@@ -37,7 +37,7 @@ activities$date <- as.Date(activities$date)
 For the histogram the data is grouped by date and the steps taken are 
 summarized for each date ignoring those intervals where no values are available.
 
-```{r}
+```{r histogram1}
 library(dplyr)
 act1 <- activities %>% 
     filter(!is.na(steps)) %>%
@@ -50,7 +50,7 @@ hist(act1$stepsTaken,
      ylab="Frequency") 
 ```
 
-```{r}
+```{r meanMedianPerDay}
 m1 <- mean(act1$stepsTaken)
 med1 <- median(act1$stepsTaken)
 ```
@@ -62,7 +62,7 @@ The median of steps taken per day is `r med1`.
 Group by interval and calculate the average number of steps taken in each 
 5-minute interval than plot the average daily activity pattern as a line 
 diagram.
-```{r}
+```{r averageDailyActivityPattern}
 library(dplyr)
 act2 <- activities %>%
     filter(!is.na(steps)) %>%
@@ -77,7 +77,7 @@ plot(act2$interval, act2$mean, type='l',
 From the maximum average steps counted the corespondong interval can be derived.
 Some string conversions are done to report at what time the test person is usually most active during a day.
 
-```{r}
+```{r maxInterval}
 maxSteps <- max(act2$mean)
 index <- which(act2$mean == maxSteps)
 interval <- act2[index,]$interval
@@ -92,7 +92,7 @@ is performed at `r maxTime`.
 
 ## Imputing missing values
 
-```{r}
+```{r missingValues}
 missingValues <- nrow(activities[is.na(activities$steps), ])
 ```
 
@@ -100,7 +100,7 @@ There are `r missingValues` missing values that were omitted in the previous
 calculations. To fill in the missing values for each intervall the average steps
 counted for that interval is used.
 
-```{r}
+```{r fillingInMissingValues}
 library(dplyr)
 actFull <- merge(activities, act2)
 actFull$steps[is.na(actFull$steps)] <- round(actFull$mean[is.na(actFull$steps)])
@@ -109,7 +109,7 @@ actFull <- arrange(actFull[c("steps", "date", "interval")], date, interval)
 
 With these added values an new histogram is plotted:
 
-```{r}
+```{r histogram2}
 library(dplyr)
 act3 <- actFull %>% 
     group_by(date) %>% 
@@ -121,7 +121,6 @@ hist(act3$stepsTaken,
      ylab="Frequency") 
 m2 <- mean(act3$stepsTaken)
 med2 <- median(act3$stepsTaken)
-
 ```
 
 The shape of the new histogram does not differ much from the original one. 
@@ -140,7 +139,7 @@ For the comparison of workdays and weekends two sets are filtered one including
 the workdays and the other including the weekends. Both are grouped by 5-minute
 interals and the means of steps are calculated.
 
-```{r}
+```{r workdayWeekendActivities}
 library(dplyr)
 
 actWD <- activities %>%

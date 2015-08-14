@@ -1,5 +1,10 @@
-# Reproducible Research: Peer Assessment 1
-Hartwig Tödter  
+---
+title: "Reproducible Research: Peer Assessment 1"
+author: "Hartwig Tödter"
+output: 
+    html_document:
+        keep_md: true
+---
 
 ## Introduction
 
@@ -36,22 +41,6 @@ summarized for each date ignoring those intervals where no values are available.
 
 ```r
 library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-## 
-## The following object is masked from 'package:stats':
-## 
-##     filter
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 act1 <- activities %>% 
     filter(!is.na(steps)) %>%
     group_by(date) %>% 
@@ -63,7 +52,7 @@ hist(act1$stepsTaken,
      ylab="Frequency") 
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+![plot of chunk histogram1](figure/histogram1-1.png) 
 
 
 ```r
@@ -71,7 +60,7 @@ m1 <- mean(act1$stepsTaken)
 med1 <- median(act1$stepsTaken)
 ```
 
-The mean steps taken per day is 1.0766189\times 10^{4}. 
+The mean steps taken per day is 1.0766189 &times; 10<sup>4</sup>. 
 The median of steps taken per day is 10765.
 
 ## What is the average daily activity pattern?
@@ -91,7 +80,7 @@ plot(act2$interval, act2$mean, type='l',
     main="Average Daily Activity Pattern")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+![plot of chunk averageDailyActivityPattern](figure/averageDailyActivityPattern-1.png) 
 
 From the maximum average steps counted the corespondong interval can be derived.
 Some string conversions are done to report at what time the test person is usually most active during a day.
@@ -144,7 +133,7 @@ hist(act3$stepsTaken,
      ylab="Frequency") 
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+![plot of chunk histogram2](figure/histogram2-1.png) 
 
 ```r
 m2 <- mean(act3$stepsTaken)
@@ -155,8 +144,8 @@ The shape of the new histogram does not differ much from the original one.
 This is evident because there were only intervals for eight days added 
 with the average values from the other 53 days.
 
-The mean steps taken per day of the completed data frame is 1.076564\times 10^{4}. 
-The median steps taken per day of the completed data frame is 1.0762\times 10^{4}.
+The mean steps taken per day of the completed data frame is 1.076564 &times; 10<sup>4</sup>. 
+The median steps taken per day of the completed data frame is 1.0762 &times; 10<sup>4</sup>.
 
 The new mean differs by -0.55 from the old mean. The new median differs by
 -3 from the old median.
@@ -193,7 +182,7 @@ plot(actWE$interval, actWE$mean, type='l',
     xlab="Steps per 5-minute interval", ylab="Frequency")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
+![plot of chunk workdayWeekendActivities](figure/workdayWeekendActivities-1.png) 
 
 ```r
 stepsPerWorkday <- round(mean(actWD$mean) * 288)
